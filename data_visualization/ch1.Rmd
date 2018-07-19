@@ -1,0 +1,349 @@
+---
+title: "R Notebook for Chapter 1 or 3 Data Science with R"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+```
+3.2.4 web book R for data science
+```
+```
+find and add ggplot basic dierections 
+```
+```{r}
+plot(cars)
+```
+
+
+```{r}
+library(ggplot2)
+ggplot2::mpg
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x= displ,y = hwy))
+```
+
+```{r}
+#### 3.2.4 ? 2
+str(mpg)
+```
+
+```{r}
+### 3.2.4 ? 3
+str(mpg$drv)
+```
+```{r}
+### 3.2.4 ? 4
+library(ggplot2)
+ggplot2::mpg
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x= hwy,y = cyl))
+
+
+```
+
+```{r}
+library(ggplot2)
+ggplot2::mpg
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x= class,y = drv))
+```
+
+```{r}
+## 3.3
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = class))
+```
+
+```{r}
+# Left 3.3
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, alpha = class))
+
+# Right 3.3
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, shape = class))
+```
+
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy), color = "blue")
+```
+
+```{r}
+### another color
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy), color = "purple")
+```
+
+
+```{r}
+### code from ggplot2 book 
+df2q <- data.frame(x= 1:5, y = 1:25, z = 1:25)
+sq <- ggplot(df2q, aes(x,y))
+sq +geom_point(aes(shape=z), size =4) +
+  scale_shape_identity()
+sq + geom_point(aes(shape = z), size = 4, color = "red", fill = "green") +
+   scale_shape_identity()
+### got this error Error: A continuous variable can not be mapped to shape
+###it went away when I added scale_shape_identity()
+```
+
+```{r}
+### 3.3.1 ? 3
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy), color = "purple",size = mpg$cyl, shape = mpg$cty )
+```
+
+```{r}
+## fix this later
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy), color = mpg$displ < 5)
+```
+
+```{r}
+### 3.5
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_wrap(~ class, nrow = 2)
+```
+
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_grid(drv ~ cyl)
+```
+
+
+```{r}
+##3.5.1 ?2
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = drv, y = cyl))
+```
+
+```{r}
+###3.5.1 ?3
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(drv ~ .)
+```
+```{r}
+### 3.5.1 ?3
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(. ~ cyl)
+```
+
+```{r}
+### 3.5.1 ?4
+###Take the first faceted plot in this section:
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_wrap(~ class, nrow = 2)
+```
+
+
+```{r}
+#3.5.1 ? 5
+?facet_wrap
+```
+```
+from help
+
+Wrap a 1d ribbon of panels into 2d
+
+Description
+
+facet_wrap wraps a 1d sequence of panels into 2d. This is generally a better use of screen space than facet_grid() because most displays are roughly rectangular.
+
+Usage
+
+facet_wrap(facets, nrow = NULL, ncol = NULL, scales = "fixed",
+  shrink = TRUE, labeller = "label_value", as.table = TRUE,
+  switch = NULL, drop = TRUE, dir = "h", strip.position = "top")
+Arguments
+
+facets	
+Either a formula or character vector. Use either a one sided formula, ~a + b, or a character vector, c("a", "b").
+nrow, ncol	
+Number of rows and columns.
+scales	
+should Scales be fixed ("fixed", the default), free ("free"), or free in one dimension ("free_x", "free_y").
+shrink	
+If TRUE, will shrink scales to fit output of statistics, not raw data. If FALSE, will be range of raw data before statistical summary.
+labeller	
+A function that takes one data frame of labels and returns a list or data frame of character vectors. Each input column corresponds to one factor. Thus there will be more than one with formulae of the type ~cyl + am. Each output column gets displayed as one separate line in the strip label. This function should inherit from the "labeller" S3 class for compatibility with labeller(). See label_value() for more details and pointers to other options.
+as.table	
+If TRUE, the default, the facets are laid out like a table with highest values at the bottom-right. If FALSE, the facets are laid out like a plot with the highest value at the top-right.
+switch	
+By default, the labels are displayed on the top and right of the plot. If "x", the top labels will be displayed to the bottom. If "y", the right-hand side labels will be displayed to the left. Can also be set to "both".
+drop	
+If TRUE, the default, all factor levels not used in the data will automatically be dropped. If FALSE, all factor levels will be shown, regardless of whether or not they appear in the data.
+dir	
+Direction: either "h" for horizontal, the default, or "v", for vertical.
+strip.position	
+By default, the labels are displayed on the top of the plot. Using strip.position it is possible to place the labels on either of the four sides by setting strip.position = c("top", "bottom", "left", "right")
+Examples
+```
+```{r}
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point() +
+  facet_wrap(~class)
+```
+```{r}
+# Control the number of rows and columns with nrow and ncol
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point() +
+  facet_wrap(~class, nrow = 4)
+```
+
+```{r}
+
+# You can facet by multiple variables
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point() +
+  facet_wrap(~ cyl + drv)
+```
+
+```{r}
+
+# Or use a character vector:
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point() +
+  facet_wrap(c("cyl", "drv"))
+```
+
+```{r}
+# Use the `labeller` option to control how labels are printed:
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point() +
+  facet_wrap(c("cyl", "drv"), labeller = "label_both")
+```
+
+```{r}
+# To change the order in which the panels appear, change the levels
+# of the underlying factor.
+mpg$class2 <- reorder(mpg$class, mpg$displ)
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point() +
+  facet_wrap(~class2)
+```
+```{r}
+# By default, the same scales are used for all panels. You can allow
+# scales to vary across the panels with the `scales` argument.
+# Free scales make it easier to see patterns within each panel, but
+# harder to compare across panels.
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point() +
+  facet_wrap(~class, scales = "free")
+```
+```{r}
+# To repeat the same data in every panel, simply construct a data frame
+# that does not contain the faceting variable.
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point(data = transform(mpg, class = NULL), colour = "grey85") +
+  geom_point() +
+  facet_wrap(~class)
+```
+```{r}
+# Use `strip.position` to display the facet labels at the side of your
+# choice. Setting it to `bottom` makes it act as a subtitle for the axis.
+# This is typically used with free scales and a theme without boxes around
+# strip labels.
+ggplot(economics_long, aes(date, value)) +
+  geom_line() +
+  facet_wrap(~variable, scales = "free_y", nrow = 2, strip.position = "bottom") +
+  theme(strip.background = element_blank(), strip.placement = "outside")
+
+```
+
+
+```{r}
+##3.6
+# left
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+
+# right
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy))
+```
+
+```{r}
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy, linetype = drv))
+```
+
+
+```{r}
+ggplot(data = mpg) +
+  geom_smooth(mapping = aes(x = displ, y = hwy))
+```
+```{r}
+ggplot(data = mpg) +
+  geom_smooth(mapping = aes(x = displ, y = hwy, group = drv))
+```
+```{r}
+ggplot(data = mpg) +
+  geom_smooth(
+    mapping = aes(x = displ, y = hwy, color = drv),
+    show.legend = FALSE
+  )
+```
+
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  geom_smooth(mapping = aes(x = displ, y = hwy))
+```
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point() + 
+  geom_smooth()
+```
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point(mapping = aes(color = class)) + 
+  geom_smooth()
+```
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point(mapping = aes(color = class)) + 
+  geom_smooth(data = filter(mpg, class == "subcompact"), se = FALSE)
+```
+
+```
+3.6.1
+What geom would you use to draw a line chart? A boxplot? A histogram? An area chart?
+````
+```{r}
+#geom_line()
+#geom_boxplot()
+#geom_histogram()
+#geom_area()
+```
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) + 
+  geom_point() + 
+  geom_smooth(se = FALSE)
+```
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
